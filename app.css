@@ -39,16 +39,17 @@ p {
 #grid {
     background: #fff url(images/tracks.png) no-repeat;
     background-size: cover;
-    display: grid;
-    grid-template-rows: auto auto auto;
     margin: 2em;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     flex-wrap: wrap;
 }
 
-.grid-item {
+.grid-container {
     display: grid;
     grid-template-columns: auto auto auto;
+}
+
+.grid-item {
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -88,12 +89,6 @@ p {
 
 .grid-item:nth-child(9){
     background: #677bcbfa;
-}
-
-@media (min-width: 550px) {
-    #grid div {
-        width: calc(100% / 3);
-    }
 }
 
 .grid-item h3 {

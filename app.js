@@ -48,7 +48,6 @@
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
-
     
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -65,20 +64,18 @@
 
     const generateTileForDinos = obj => {
         const div = document.createElement("div");
-        const h4 = document.createElement("h4");
+        const h3 = document.createElement("h3");
         const p = document.createElement("p");
         const img = document.createElement("img");
 
-        //Append the element to the DOM
         const tile = selector('main');
         tile.append(div);
-        div.append(h4);
+        div.append(h3);
         div.append(img);
         div.append(p);
-        // set content and attributes
-        h4.innerHTML = obj.species;
+        h3.innerHTML = obj.species;
         p.innerHTML = obj.fact;
-        img.setAttribute("href", `./images/${obj.species.toLowerCase()}.png`)
+        img.setAttribute("src", `./images/${obj.species.toLowerCase()}.png`)
         div.setAttribute("class","grid-item");
     }
 
@@ -88,8 +85,6 @@
     selector('.form-container #btn').addEventListener('click',() => {
         selector('form').style.display = 'none';
         // selector('#grid').setAttribute("class","display:grid; grid-template-columns: auto auto auto;")
-        console.log(dinos);
-        console.log('Human object :'+JSON.stringify(human))
         dinos.forEach(ele => generateTileForDinos(ele));
     })
 
