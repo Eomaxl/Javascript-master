@@ -1,6 +1,8 @@
-const selector = (val) => document.querySelector(val);
-    // Create Dino Constructor
-    function Dino(species,weight,height,diet,where,when,fact) {
+
+    const selector = (val) => document.querySelector(val);
+
+    // Create Dino Constructors
+    function DinoConstructor(species, weight, height, diet, where, when, fact) {
         this.species = species;
         this.weight = weight;
         this.height = height;
@@ -10,23 +12,26 @@ const selector = (val) => document.querySelector(val);
         this.fact = fact;
     }
 
-    // Create Dino Objects
-    async function getDinoJSON() {
-        let response = await fetch('dino.json')
-        let data = await response.json();
-        return data;
+    const getDinoData = async () => {
+        const JSONdata = await fetch('dino.json');
+        const data = await JSONdata.json();
+        return data.Dinos;
     }
 
-    async function createDinoObjects() {
-       const dinoObj = await getDinoJSON();
-       let dinos = dinoObj.Dinos.map( ({species, weight, height, diet, where, when, fact}) => {
-            let newObj = { [species] : { species, weight, height, diet, where, when, fact } }
-            return newObj;   
-       });
-       console.log('Dino Objects created are :'+JSON.stringify(dinos));  
-    } 
-    createDinoObjects();
-            
+    const dinos = [];
+
+    window.onload = async function() {
+        const dinoArray = await getDinoData();
+
+        dinoArray.forEach(element => {
+            const dino = new DinoConstructor(element.species,
+                element.weight,
+                element.height,element.diet, element.where,element.when,
+                element.fact);
+            dinos.push(dino);
+        });
+    }
+    
     // Create Human Object
     const human = new Object();
 
@@ -39,8 +44,8 @@ const selector = (val) => document.querySelector(val);
             human.weight = selector('#weight').value;
             human.diet = selector('#diet').value;
         })();
-        console.log('Human Object :'+JSON.stringify(human))
     })
+
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
 
@@ -54,12 +59,38 @@ const selector = (val) => document.querySelector(val);
 
 
     // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
+    selector('.form-container #btn').addEventListener('click', () => {
+        selector('#grid').style.display = "block";
+    })
+
+    const generateTileForDinos = obj => {
+        const div = document.createElement("div");
+        const h4 = document.createElement("h4");
+        const p = document.createElement("p");
+        const img = document.createElement("img");
+
+        //Append the element to the DOM
+        const tile = selector('main');
+        tile.append(div);
+        div.append(h4);
+        div.append(img);
+        div.append(p);
+        // set content and attributes
+        h4.innerHTML = obj.species;
+        p.innerHTML = obj.fact;
+        img.setAttribute("href", `./images/${obj.species.toLowerCase()}.png`)
+        div.setAttribute("class","grid-item");
+    }
+
+    // Add tiles to DOM
 
     // Remove form from screen
     selector('.form-container #btn').addEventListener('click',() => {
         selector('form').style.display = 'none';
+        // selector('#grid').setAttribute("class","display:grid; grid-template-columns: auto auto auto;")
+        console.log(dinos);
+        console.log('Human object :'+JSON.stringify(human))
+        dinos.forEach(ele => generateTileForDinos(ele));
     })
 
 // On button click, prepare and display infographic
