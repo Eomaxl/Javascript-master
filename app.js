@@ -43,11 +43,14 @@
             human.inch = selector('#inches').value;
             human.weight = selector('#weight').value;
             human.diet = selector('#diet').value;
+            human.species = 'human';
+            human.fact = '';
         })();
     })
 
     // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
+    // NOTE: Weight in JSON file is in lbs, height in inches.
+
     
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -84,7 +87,8 @@
     // Remove form from screen
     selector('.form-container #btn').addEventListener('click',() => {
         selector('form').style.display = 'none';
-        // selector('#grid').setAttribute("class","display:grid; grid-template-columns: auto auto auto;")
+        dinos.splice(4,0,human);
+        console.log('Dino array :'+JSON.stringify(dinos));
         dinos.forEach(ele => generateTileForDinos(ele));
     })
 
