@@ -1,6 +1,13 @@
-
     const selector = (val) => document.querySelector(val);
 
+    /** @param {string} species
+     * @param {number} weight  
+     * @param {number} height
+     * @param {string} diet
+     * @param {string} where
+     * @param {string} when
+     * @param {string} fact
+     **/
     function DinoConstructor(species, weight, height, diet, where, when, fact) {
         this.species = species;
         this.weight = weight;
@@ -21,7 +28,6 @@
 
     window.onload = async function() {
         const dinoArray = await getDinoData();
-
         dinoArray.forEach(element => {
             const dino = new DinoConstructor(element.species,
                 element.weight,
@@ -44,6 +50,9 @@
         })();
     })
 
+     /** @param {[Dino]} dinos 
+     * @returns {[Dino]} dinos
+    */
     const compareHeight = (dinos) =>{
         dinos.forEach( dino => {
             const humanHeight = parseInt(human.feet * 12) + parseInt(human.inch);
@@ -60,6 +69,9 @@
         return dinos; 
     }
     
+     /** @param {[Dino]} dinos 
+     * @returns {[Dino]} dinos
+    */
     const compareWeight = (dinos) => {
         dinos.forEach( dino => {
             const humanWeight = parseInt(human.weight);
@@ -76,6 +88,9 @@
         return dinos; 
     }
     
+    /** @param {[Dino]} dinos 
+     * @returns {[Dino]} dinos
+    */
     const compareDiet = (dinos) => {
         dinos.forEach( dino => {
             if(dino.species !== "Pigeon" && dino.species !== human.species) {
@@ -120,7 +135,6 @@
         dinos.splice(4,0,human);
         const randomNum = Math.floor(Math.random() * 2) + 0;
         const compare = [compareHeight(dinos), compareWeight(dinos), compareDiet(dinos)];
-        const newDinos = compare[randomNum];
-        console.log("After compare :"+JSON.stringify(newDinos));
-        newDinos.forEach(ele => generateTileForDinos(ele));
+        const newDinosArr = compare[randomNum];
+        newDinosArr.forEach(ele => generateTileForDinos(ele));
     })
