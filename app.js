@@ -1,7 +1,6 @@
 
     const selector = (val) => document.querySelector(val);
 
-    // Create Dino Constructors
     function DinoConstructor(species, weight, height, diet, where, when, fact) {
         this.species = species;
         this.weight = weight;
@@ -32,35 +31,69 @@
         });
     }
     
-    // Create Human Object
     const human = new Object();
 
-    // Use IIFE to get human data from form
     selector('.form-container #btn').addEventListener('click',() => {
         (function getHumanData() {
-            human.name = selector('#name').value;
+            human.fact  = selector('#name').value;
             human.feet = selector('#feet').value;
             human.inch = selector('#inches').value;
             human.weight = selector('#weight').value;
             human.diet = selector('#diet').value;
             human.species = 'human';
-            human.fact = '';
         })();
     })
 
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
+    const compareHeight = (dinos) =>{
+        dinos.forEach( dino => {
+            const humanHeight = parseInt(human.feet * 12) + parseInt(human.inch);
+            if(dino.species !== "Pigeon") {
+                if(dino.height === humanHeight) {
+                    dino.fact = `${dino.species} has same height as of ${human.fact}`;
+                } else if(dino.height > humanHeight) {
+                    dino.fact = `${dino.species} is taller than ${human.fact}`;
+                } else if(dino.height < humanHeight) {
+                    dino.fact = `${dino.species} is  smaller than ${human.fact}`;
+                }
+            }
+        })
+        return dinos; 
+    }
     
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
+    const compareWeight = (dinos) => {
+        dinos.forEach( dino => {
+            const humanWeight = parseInt(human.weight);
+            if(dino.species !== "Pigeon") {
+                if(dino.weight === humanWeight) {
+                    dino.fact = `${dino.species} has same weight as of ${human.fact}`;
+                } else if(dino.weight > humanWeight) {
+                    dino.fact = `${dino.species} is heavier than ${human.fact}`;
+                } else if(dino.weight < humanWeight) {
+                    dino.fact = `${dino.species} is  lighter than ${human.fact}`;
+                }
+            }
+        })
+        return dinos; 
+    }
     
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
+    const compareDiet = (dinos) => {
+        dinos.forEach( dino => {
+            if(dino.species !== "Pigeon" && dino.species !== human.species) {
+                if(dino.diet === human.diet) {
+                    console.log("Inside herbavor");
+                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
+                } else if(dino.diet === human.diet) {
+                    console.log("Inside omnivor");
+                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
+                } else if(dino.diet === human.diet) {
+                    console.log("Inside carnivor");
+                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
+                }
+            }
+        })
+        return dinos; 
+    }
 
-
-    // Generate Tiles for each Dino in Array
     selector('.form-container #btn').addEventListener('click', () => {
         selector('#grid').style.display = "block";
     })
@@ -82,14 +115,12 @@
         div.setAttribute("class","grid-item");
     }
 
-    // Add tiles to DOM
-
-    // Remove form from screen
     selector('.form-container #btn').addEventListener('click',() => {
         selector('form').style.display = 'none';
         dinos.splice(4,0,human);
-        console.log('Dino array :'+JSON.stringify(dinos));
-        dinos.forEach(ele => generateTileForDinos(ele));
+        const randomNum = Math.floor(Math.random() * 2) + 0;
+        const compare = [compareHeight(dinos), compareWeight(dinos), compareDiet(dinos)];
+        const newDinos = compare[randomNum];
+        console.log("After compare :"+JSON.stringify(newDinos));
+        newDinos.forEach(ele => generateTileForDinos(ele));
     })
-
-// On button click, prepare and display infographic
