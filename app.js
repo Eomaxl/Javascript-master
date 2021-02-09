@@ -50,63 +50,47 @@
         })();
     })
 
-     /** @param {[Dino]} dinos 
-     * @returns {[Dino]} dinos
-    */
-    const compareHeight = (dinos) =>{
-        dinos.forEach( dino => {
-            const humanHeight = parseInt(human.feet * 12) + parseInt(human.inch);
-            if(dino.species !== "Pigeon") {
-                if(dino.height === humanHeight) {
-                    dino.fact = `${dino.species} has same height as of ${human.fact}`;
-                } else if(dino.height > humanHeight) {
-                    dino.fact = `${dino.species} is taller than ${human.fact}`;
-                } else if(dino.height < humanHeight) {
-                    dino.fact = `${dino.species} is  smaller than ${human.fact}`;
-                }
+    DinoConstructor.prototype.compareHeight = function(){
+        if( this.species !== 'Pigeon') {
+            if( human.height < this.height) {
+                return `${this.species} is taller than ${human.fact}`;
+            } else if (human.height > this.height) {
+                return `${this.species} is smaller than ${human.fact}`;
+            } else {
+                return `${this.species} has the same height as of ${human.fact}`;
             }
-        })
-        return dinos; 
+        }      
     }
-    
-     /** @param {[Dino]} dinos 
-     * @returns {[Dino]} dinos
-    */
-    const compareWeight = (dinos) => {
-        dinos.forEach( dino => {
-            const humanWeight = parseInt(human.weight);
-            if(dino.species !== "Pigeon") {
-                if(dino.weight === humanWeight) {
-                    dino.fact = `${dino.species} has same weight as of ${human.fact}`;
-                } else if(dino.weight > humanWeight) {
-                    dino.fact = `${dino.species} is heavier than ${human.fact}`;
-                } else if(dino.weight < humanWeight) {
-                    dino.fact = `${dino.species} is  lighter than ${human.fact}`;
-                }
+
+    DinoConstructor.prototype.compareWeight = function(){
+        const humanWeight = parseInt(human.weight);
+        if( this.species !== 'Pigeon') {
+            if (humanWeight < this.weight + 20 && humanWeight > this.weight - 20){
+                return `Close match! They average ${this.weight} pounds. But you probably wouldn't want to wrestle.`;
+            } else if (humanWeight >= this.weight + 20){
+                const weightDifference = Number.parseFloat(humanWeight / this.weight).toPrecision(2);
+                return `You're ${weightDifference} times larger than the ${this.species}. Still not a great pet idea.`;
+            } else {
+                const weightDifference = Number.parseFloat(this.weight/human.weight).toPrecision(2);
+                return `The ${this.species} is ${weightDifference} times larger than you. Don't get in the way.`;
             }
-        })
-        return dinos; 
+        }
     }
     
     /** @param {[Dino]} dinos 
      * @returns {[Dino]} dinos
     */
-    const compareDiet = (dinos) => {
-        dinos.forEach( dino => {
-            if(dino.species !== "Pigeon" && dino.species !== human.species) {
-                if(dino.diet === human.diet) {
-                    console.log("Inside herbavor");
-                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
-                } else if(dino.diet === human.diet) {
-                    console.log("Inside omnivor");
-                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
-                } else if(dino.diet === human.diet) {
-                    console.log("Inside carnivor");
-                    dino.fact = `${dino.species} has same diet as of ${human.fact}`;
-                }
+    DinoConstructor.prototype.compareDiet = function(){
+        console.log(`${this.species}`);
+        if (this.species !== "Pigeon" && this.species !== human.species) {
+            if (this.diet === human.diet) {
+                return `${this.species} has the same diet as of ${human.fact}`;
+            } else if (this.diet === 'carnivor') {
+                return `${this.species} is carivor`;
+            } else {
+                return `${this.species} is herbavor`;
             }
-        })
-        return dinos; 
+        }
     }
 
     selector('.form-container #btn').addEventListener('click', () => {
@@ -124,8 +108,33 @@
         div.append(h3);
         div.append(img);
         div.append(p);
-        h3.innerHTML = obj.species;
-        p.innerHTML = obj.fact;
+        (obj.species === human) ? h3.innerHTML = obj.fact : h3.innerHTML = obj.species;
+        p.innerHTML = ( () => {
+            let result = ``;
+            const rand = Math.floor(Math.random() * 7);
+
+            switch (rand) {
+                case 1:
+                    result = obj.compareWeight();
+                    break;
+                case 2:
+                    result = obj.compareDiet();
+                    break;
+                case 3:
+                    result = obj.compareHeight();
+                    break;
+                case 4:
+                    result = `The ${obj.species} was found in the ${obj.when}.`;
+                    break;
+                case 5:
+                    result =  `The ${obj.species} lived in what is now ${obj.where}.`;
+                    break;
+                default:
+                    result = obj.fact;
+                    break;
+            }
+            return result;
+        })();
         img.setAttribute("src", `./images/${obj.species.toLowerCase()}.png`)
         div.setAttribute("class","grid-item");
     }
@@ -133,8 +142,5 @@
     selector('.form-container #btn').addEventListener('click',() => {
         selector('form').style.display = 'none';
         dinos.splice(4,0,human);
-        const randomNum = Math.floor(Math.random() * 2) + 0;
-        const compare = [compareHeight(dinos), compareWeight(dinos), compareDiet(dinos)];
-        const newDinosArr = compare[randomNum];
-        newDinosArr.forEach(ele => generateTileForDinos(ele));
+        dinos.forEach(ele => generateTileForDinos(ele));
     })
