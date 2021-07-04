@@ -121,7 +121,6 @@ const generateTileForDinos = obj => {
     div.append(p);
     if (obj.species === `human`){
         h3.innerHTML = obj.fact;
-        p.innerHTML = `There are 7.5 billion people in this world.`;
     } else {
         h3.innerHTML = obj.species;
         p.innerHTML = ( () => {
