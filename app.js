@@ -103,7 +103,6 @@ DinoConstructor.prototype.compareDiet = function(){
     }
 }
 
-
 selector(`.form-container #btn`).addEventListener(`click`, () => {
     selector(`#grid`).style.display = `block`;
 });
